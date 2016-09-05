@@ -6,6 +6,11 @@ namespace AnalyticsWizard;
 class ReportRequest
 {
     /**
+     * @var
+     */
+    protected static $defaultViewId;
+
+    /**
      * @var \Google_Service_AnalyticsReporting_ReportRequest
      */
     protected $reportRequest;
@@ -38,10 +43,20 @@ class ReportRequest
     /**
      * @param $viewId
      */
-    public function __construct($viewId)
+    public static function setDefaultViewId($viewId)
+    {
+        self::$defaultViewId = $viewId;
+    }
+
+    /**
+     * @param null $viewId
+     */
+    public function __construct($viewId=null)
     {
         $this->reportRequest = new \Google_Service_AnalyticsReporting_ReportRequest;
-        $this->reportRequest->setViewId($viewId);
+        $this->reportRequest->setViewId(
+            ($viewId === null? self::$defaultViewId : $viewId)
+        );
     }
 
     /**
@@ -75,23 +90,21 @@ class ReportRequest
     /**
      * @param $from
      * @param $to
-     * @return Report
+     * @return $this
      */
     public function addDateRange($from, $to)
     {
         $dateRange = new \Google_Service_AnalyticsReporting_DateRange();
         $dateRange->setStartDate($from);
         $dateRange->setEndDate($to);
-//        $this->dateRanges = $dateRange;
 
-//        return $this;
         return $this->add('dateRanges', $dateRange);
     }
 
     /**
      * @param $expression
      * @param null $alias
-     * @return Report
+     * @return $this
      */
     public function addMetric($expression, $alias=null)
     {
@@ -108,7 +121,7 @@ class ReportRequest
     /**
      * @param $operator
      * @param \Closure $closure
-     * @return Report
+     * @return $this
      */
     public function addMetricFilterClause($operator, \Closure $closure)
     {
@@ -124,7 +137,7 @@ class ReportRequest
 
     /**
      * @param $name
-     * @return Report
+     * @return $this
      */
     public function addDimension($name)
     {
@@ -137,7 +150,7 @@ class ReportRequest
     /**
      * @param $operator
      * @param \Closure $closure
-     * @return Report
+     * @return $this
      */
     public function addDimensionFilterClause($operator, \Closure $closure)
     {

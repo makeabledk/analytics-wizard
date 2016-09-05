@@ -21,6 +21,15 @@ class ReportResponse
         $this->report = $report;
     }
 
+
+    /**
+     * @return Report
+     */
+    public function rows()
+    {
+        return $this->get()->getData()-getRows();
+    }
+
     /**
      * @return \Google_Service_AnalyticsReporting_Report
      */
