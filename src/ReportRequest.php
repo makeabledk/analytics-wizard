@@ -60,6 +60,18 @@ class ReportRequest
     }
 
     /**
+     * @param $func
+     * @param $args
+     * @return $this
+     */
+    public function __call($func, $args)
+    {
+        call_user_func_array([$this->reportRequest, $func], $args);
+
+        return $this;
+    }
+
+    /**
      * @param $property
      * @param $value
      * @return $this

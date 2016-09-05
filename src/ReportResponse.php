@@ -23,11 +23,11 @@ class ReportResponse
 
 
     /**
-     * @return Report
+     * @return array
      */
     public function rows()
     {
-        return $this->get()->getData()-getRows();
+        return $this->get()->getData()->getRows();
     }
 
     /**
