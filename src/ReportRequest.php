@@ -3,6 +3,8 @@
 namespace AnalyticsWizard;
 
 
+use Carbon\Carbon;
+
 class ReportRequest
 {
     /**
@@ -106,9 +108,11 @@ class ReportRequest
      */
     public function addDateRange($from, $to=null)
     {
+        list($from, $to) = $this->normalizeDates($from, $to);
+
         $dateRange = new \Google_Service_AnalyticsReporting_DateRange();
         $dateRange->setStartDate($from);
-        $dateRange->setEndDate($to !== null? $to : $from);
+        $dateRange->setEndDate($to);
 
         return $this->add('dateRanges', $dateRange);
     }
@@ -174,5 +178,37 @@ class ReportRequest
         $filterClause->setOperator($operator);
 
         return $this->add('dimensionFilterClauses', $filterClause);
+    }
+
+
+    // _________________________________________________________________________________________________________________
+
+    /**
+     * @param $from
+     * @param $to
+     * @return array
+     */
+    private function normalizeDates($from, $to)
+    {
+        // If $to is empty, use $from date
+        $to = ($to===null? $from : $to);
+
+        return [
+            $this->normalizeDate($from),
+            $this->normalizeDate($to)
+        ];
+    }
+
+    /**
+     * @param $date
+     * @return mixed
+     */
+    private function normalizeDate($date)
+    {
+        if($date instanceof Carbon) {
+            return $date->toDateString();
+        }
+
+        return $date;
     }
 }
