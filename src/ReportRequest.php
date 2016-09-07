@@ -101,14 +101,14 @@ class ReportRequest
 
     /**
      * @param $from
-     * @param $to
+     * @param $to null
      * @return $this
      */
-    public function addDateRange($from, $to)
+    public function addDateRange($from, $to=null)
     {
         $dateRange = new \Google_Service_AnalyticsReporting_DateRange();
         $dateRange->setStartDate($from);
-        $dateRange->setEndDate($to);
+        $dateRange->setEndDate($to !== null? $to : $from);
 
         return $this->add('dateRanges', $dateRange);
     }
