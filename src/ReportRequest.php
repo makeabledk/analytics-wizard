@@ -99,6 +99,17 @@ class ReportRequest
         return $this->reportRequest;
     }
 
+    /**
+     * @param $pageToken
+     * @return $this
+     */
+    public function setPage($pageToken)
+    {
+        $this->reportRequest->setPageToken($pageToken);
+
+        return $this;
+    }
+
     // _________________________________________________________________________________________________________________
 
     /**

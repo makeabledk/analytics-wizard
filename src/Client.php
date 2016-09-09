@@ -30,19 +30,15 @@ class Client
     }
 
     /**
-     * @param $reportRequests
+     * @param array $reportRequests
      * @return array
      */
-    public function fetchReports($reportRequests)
+    public function fetchReports(array $reportRequests)
     {
-        if(!is_array($reportRequests)){
-            $reportRequests = array($reportRequests);
-        }
-
         $body = new \Google_Service_AnalyticsReporting_GetReportsRequest();
         $body->setReportRequests($reportRequests);
 
-        $response = $this->analytics->reports->batchGet($body);
+        $response = $this->analytics->reports->batchGet($body)->getReports();
         $reports = array();
 
         foreach($response as $report)
@@ -51,6 +47,15 @@ class Client
         }
 
         return $reports;
+    }
+
+    /**
+     * @param \Google_Service_AnalyticsReporting_ReportRequest $reportRequest
+     * @return mixed
+     */
+    public function fetchReport(\Google_Service_AnalyticsReporting_ReportRequest $reportRequest)
+    {
+        return $this->fetchReports([$reportRequest])[0];
     }
 
 }

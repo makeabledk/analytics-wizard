@@ -21,6 +21,31 @@ class ReportResponse
         $this->report = $report;
     }
 
+    /**
+     * @return \Google_Service_AnalyticsReporting_Report
+     */
+    public function get()
+    {
+        return $this->report;
+    }
+
+    // _________________________________________________________________________________________________________________
+
+    /**
+     * @return bool
+     */
+    public function hasMorePages()
+    {
+        return $this->nextPageToken() !== null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function nextPageToken()
+    {
+        return $this->get()->getNextPageToken();
+    }
 
     /**
      * @return array
@@ -28,14 +53,6 @@ class ReportResponse
     public function rows()
     {
         return $this->get()->getData()->getRows();
-    }
-
-    /**
-     * @return \Google_Service_AnalyticsReporting_Report
-     */
-    public function get()
-    {
-        return $this->report;
     }
 
 }
