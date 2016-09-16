@@ -209,7 +209,9 @@ class ReportRequest
         $orderBy->setFieldName($field);
 
         if($order !== null) {
-            $orderBy->setSortOrder($order);
+            $orderBy->setSortOrder(
+                str_replace(['asc', 'desc'], ['ASCENDING', 'DESCENDING'], strtolower($order))
+            );
         }
 
         if($comparison !== null) {
