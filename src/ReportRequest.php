@@ -43,6 +43,11 @@ class ReportRequest
     protected $dimensionFilterClauses = array();
 
     /**
+     * @var array
+     */
+    protected $orderBys = array();
+
+    /**
      * @param $viewId
      */
     public static function setDefaultViewId($viewId)
@@ -95,6 +100,7 @@ class ReportRequest
         $this->reportRequest->setMetricFilterClauses($this->metricFilterClauses);
         $this->reportRequest->setDimensions($this->dimensions);
         $this->reportRequest->setDimensionFilterClauses($this->dimensionFilterClauses);
+        $this->reportRequest->setOrderBys($this->orderBys);
 
         return $this->reportRequest;
     }
@@ -191,6 +197,27 @@ class ReportRequest
         return $this->add('dimensionFilterClauses', $filterClause);
     }
 
+    /**
+     * @param $field
+     * @param null $order
+     * @param null $comparison
+     * @return $this
+     */
+    public function addOrderBy($field, $order=null, $comparison=null)
+    {
+        $orderBy = new \Google_Service_AnalyticsReporting_OrderBy();
+        $orderBy->setFieldName($field);
+
+        if($order !== null) {
+            $orderBy->setSortOrder($order);
+        }
+
+        if($comparison !== null) {
+            $orderBy->setOrderType($comparison);
+        }
+
+        return $this->add('orderBys', $orderBy);
+    }
 
     // _________________________________________________________________________________________________________________
 
