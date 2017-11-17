@@ -18,7 +18,7 @@ class Client
     protected $analytics;
 
     /**
-     * @param $credentialsFile
+     * @param $credentials
      * @param string $appName
      */
     public function __construct($credentials, $appName='Analytics API client')
@@ -29,10 +29,9 @@ class Client
         else {
             $this->client = new Google_Client();
             $this->client->setApplicationName($appName);
-            $this->client->setAuthConfig($credentialsFile);
+            $this->client->setAuthConfig($credentials);
             $this->client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);            
         }
-        
 
         $this->analytics = new \Google_Service_AnalyticsReporting($this->client);
     }
