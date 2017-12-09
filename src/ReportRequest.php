@@ -2,7 +2,6 @@
 
 namespace AnalyticsWizard;
 
-
 use Carbon\Carbon;
 
 class ReportRequest
@@ -25,27 +24,27 @@ class ReportRequest
     /**
      * @var array
      */
-    protected $metrics = array();
+    protected $metrics = [];
 
     /**
      * @var array
      */
-    protected $metricFilterClauses = array();
+    protected $metricFilterClauses = [];
 
     /**
      * @var array
      */
-    protected $dimensions = array();
+    protected $dimensions = [];
 
     /**
      * @var array
      */
-    protected $dimensionFilterClauses = array();
+    protected $dimensionFilterClauses = [];
 
     /**
      * @var array
      */
-    protected $orderBys = array();
+    protected $orderBys = [];
 
     /**
      * @param $viewId
@@ -58,11 +57,11 @@ class ReportRequest
     /**
      * @param null $viewId
      */
-    public function __construct($viewId=null)
+    public function __construct($viewId = null)
     {
         $this->reportRequest = new \Google_Service_AnalyticsReporting_ReportRequest;
         $this->reportRequest->setViewId(
-            ($viewId === null? self::$defaultViewId : $viewId)
+            ($viewId === null ? self::$defaultViewId : $viewId)
         );
     }
 
@@ -123,7 +122,7 @@ class ReportRequest
      * @param $to null
      * @return $this
      */
-    public function addDateRange($from, $to=null)
+    public function addDateRange($from, $to = null)
     {
         list($from, $to) = $this->normalizeDates($from, $to);
 
@@ -139,12 +138,12 @@ class ReportRequest
      * @param null $alias
      * @return $this
      */
-    public function addMetric($expression, $alias=null)
+    public function addMetric($expression, $alias = null)
     {
         $metric = new \Google_Service_AnalyticsReporting_Metric();
         $metric->setExpression($expression);
 
-        if($alias !== null) {
+        if ($alias !== null) {
             $metric->setAlias($alias);
         }
 
@@ -158,7 +157,7 @@ class ReportRequest
      */
     public function addMetricFilterClause($operator, \Closure $closure)
     {
-        $filters = array();
+        $filters = [];
         $closure(new Builder\MetricFilterClause($filters));
 
         $filterClause = new \Google_Service_AnalyticsReporting_DimensionFilterClause();
@@ -187,7 +186,7 @@ class ReportRequest
      */
     public function addDimensionFilterClause($operator, \Closure $closure)
     {
-        $filters = array();
+        $filters = [];
         $closure(new Builder\DimensionFilterClause($filters));
 
         $filterClause = new \Google_Service_AnalyticsReporting_DimensionFilterClause();
@@ -203,18 +202,18 @@ class ReportRequest
      * @param null $comparison
      * @return $this
      */
-    public function addOrderBy($field, $order=null, $comparison=null)
+    public function addOrderBy($field, $order = null, $comparison = null)
     {
         $orderBy = new \Google_Service_AnalyticsReporting_OrderBy();
         $orderBy->setFieldName($field);
 
-        if($order !== null) {
+        if ($order !== null) {
             $orderBy->setSortOrder(
                 str_replace(['asc', 'desc'], ['ASCENDING', 'DESCENDING'], strtolower($order))
             );
         }
 
-        if($comparison !== null) {
+        if ($comparison !== null) {
             $orderBy->setOrderType($comparison);
         }
 
@@ -231,11 +230,11 @@ class ReportRequest
     private function normalizeDates($from, $to)
     {
         // If $to is empty, use $from date
-        $to = ($to===null? $from : $to);
+        $to = ($to === null ? $from : $to);
 
         return [
             $this->normalizeDate($from),
-            $this->normalizeDate($to)
+            $this->normalizeDate($to),
         ];
     }
 
@@ -245,7 +244,7 @@ class ReportRequest
      */
     private function normalizeDate($date)
     {
-        if($date instanceof Carbon) {
+        if ($date instanceof Carbon) {
             return $date->toDateString();
         }
 

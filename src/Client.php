@@ -6,7 +6,6 @@ use Google_Client;
 
 class Client
 {
-
     /**
      * @var \Google_Client
      */
@@ -21,16 +20,15 @@ class Client
      * @param $credentials
      * @param string $appName
      */
-    public function __construct($credentials, $appName='Analytics API client')
+    public function __construct($credentials, $appName = 'Analytics API client')
     {
         if ($credentials instanceof Google_Client) {
             $this->client = $credentials;
-        }
-        else {
+        } else {
             $this->client = new Google_Client();
             $this->client->setApplicationName($appName);
             $this->client->setAuthConfig($credentials);
-            $this->client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);            
+            $this->client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);
         }
 
         $this->analytics = new \Google_Service_AnalyticsReporting($this->client);
@@ -46,10 +44,9 @@ class Client
         $body->setReportRequests($reportRequests);
 
         $response = $this->analytics->reports->batchGet($body)->getReports();
-        $reports = array();
+        $reports = [];
 
-        foreach($response as $report)
-        {
+        foreach ($response as $report) {
             $reports[] = new ReportResponse($report);
         }
 
@@ -64,5 +61,4 @@ class Client
     {
         return $this->fetchReports([$reportRequest])[0];
     }
-
 }

@@ -2,17 +2,15 @@
 
 namespace AnalyticsWizard\Builder;
 
-
 class MetricFilterClause extends FilterClause
 {
-
     /**
      * @param $name
      * @param $operator
      * @param null $expression
      * @return $this
      */
-    public function where($name, $operator, $expression=null)
+    public function where($name, $operator, $expression = null)
     {
         list($name, $operator, $expression) = $this->normalize($name, $operator, $expression);
 
@@ -25,5 +23,4 @@ class MetricFilterClause extends FilterClause
 
         return $this;
     }
-
 }
