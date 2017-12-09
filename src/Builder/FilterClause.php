@@ -2,10 +2,8 @@
 
 namespace AnalyticsWizard\Builder;
 
-
 abstract class FilterClause
 {
-
     /**
      * @var array
      */
@@ -29,13 +27,13 @@ abstract class FilterClause
      */
     protected function normalize($name, $operator, $expression)
     {
-        if($expression === null) {
+        if ($expression === null) {
             $expression = $operator;
             $operator = 'REGEXP';
         }
 
-        if(!is_array($expression)) {
-            $expression = array($expression);
+        if (! is_array($expression)) {
+            $expression = [$expression];
         }
 
         return [$name, $operator, $expression];
@@ -47,6 +45,5 @@ abstract class FilterClause
      * @param null $expression
      * @return mixed
      */
-    abstract public function where($name, $operator, $expression=null);
-
+    abstract public function where($name, $operator, $expression = null);
 }

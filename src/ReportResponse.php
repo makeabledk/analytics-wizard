@@ -2,10 +2,8 @@
 
 namespace AnalyticsWizard;
 
-
 class ReportResponse
 {
-
     /**
      * @var \Google_Service_AnalyticsReporting_Report
      */
@@ -54,5 +52,4 @@ class ReportResponse
     {
         return $this->get()->getData()->getRows();
     }
-
 }
